@@ -17,6 +17,9 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +56,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(modifier: Modifier = Modifier){
     var shouldShowOnboarding by remember { mutableStateOf(true) }
+
     Surface(modifier) {
         if (shouldShowOnboarding){
             OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false})
@@ -77,21 +81,26 @@ fun MyAppBefore(
 @Composable
 fun AddButton(name: String){
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val extraPadding = if (expanded) 48.dp else 0.dp
+    val extraPadding by animateDpAsState(
+        if (expanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ){
-    Row(Modifier.padding(24.dp)) {
-        Greeting(name = name, Modifier.weight(1f).padding(bottom = extraPadding))
-        ElevatedButton(
-            onClick = { expanded = !expanded }
-        ) {
-            Text(if (expanded) "Show less" else "Show more")
+        Row(Modifier.padding(24.dp)) {
+            Greeting(name = name, Modifier.weight(1f).padding(bottom = extraPadding.coerceAtLeast(0.dp)))
+            ElevatedButton(
+                onClick = { expanded = !expanded }
+            ) {
+                Text(if (expanded) "Show less" else "Show more")
+            }
         }
     }
-    }
-
 }
 
 @Composable
