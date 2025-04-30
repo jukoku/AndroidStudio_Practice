@@ -12,6 +12,11 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.Button
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +46,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyApp(
+fun MyApp2(
     modifier: Modifier = Modifier,
     names:List<String> = listOf("World", "Compose", "Zero", "Import")
     ){
@@ -82,10 +87,55 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun OnboardingScreen(
+    modifier: Modifier = Modifier,
+    onContinueClicked: () -> Unit
+    ) {
+    // TODO: This state should be hoisted
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Welcome to the Basics Codelab!")
+        Button(
+            modifier = Modifier.padding(vertical = 24.dp),
+            onClick = onContinueClicked
+        ) {
+            Text("Continue")
+        }
+    }
+}
+
+
+
+@Composable
+fun MyApp(modifier: Modifier = Modifier){
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+    Surface(modifier) {
+        if (shouldShowOnboarding){
+            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false})
+        } else {
+            MyApp2()
+        }
+    }
+}
+
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun OnboardingPreview() {
+    BasicsCodelabTheme {
+        MyApp()
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     BasicsCodelabTheme {
-        MyApp()
+        MyApp2()
     }
 }
