@@ -74,9 +74,13 @@ import androidx.compose.ui.unit.dp
 import com.codelab.basiclayouts.ui.theme.MySootheTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MainActivityThis() }
+        setContent {
+            val windowSizeClass = calculateWindowSizeClass(this)
+            MySootheApp(windowSizeClass)
+        }
     }
 }
 
@@ -351,17 +355,6 @@ fun MySootheApp(windowSize: WindowSizeClass) {
         }
         WindowWidthSizeClass.Expanded -> {
             MySootheAppLandscape()
-        }
-    }
-}
-
-class MainActivityThis : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val windowSizeClass = calculateWindowSizeClass(this)
-            MySootheApp(windowSizeClass)
         }
     }
 }
