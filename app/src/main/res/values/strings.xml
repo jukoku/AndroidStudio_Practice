@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BussinessCard</string>
+    <string name="john_doe">John Doe</string>
+    <string name="android_developer_extraordinaire">Android Developer Extraordinaire</string>
+    <string name="_82_10_1234_5678">"    +82 10 1234 5678"</string>
+    <string name="androiddev">"    @AndroidDev"</string>
+    <string name="johndoe_androiddev_com">"    johnDoe@AndroidDev.com"</string>
 </resources>
