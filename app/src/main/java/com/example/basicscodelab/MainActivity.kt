@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +31,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.res.stringResource
 
 
 class MainActivity : ComponentActivity() {
@@ -95,11 +100,19 @@ fun AddButton(name: String){
     ){
         Row(Modifier.padding(24.dp)) {
             Greeting(name = name, Modifier.weight(1f).padding(bottom = extraPadding.coerceAtLeast(0.dp)))
-            ElevatedButton(
+            IconButton(
                 onClick = { expanded = !expanded }
             ) {
-                Text(if (expanded) "Show less" else "Show more")
+                Icon(
+                imageVector = if (expanded) Filled.ExpandLess else Filled.ExpandMore,
+                contentDescription = if (expanded) {
+                    stringResource(R.string.show_less)
+                } else {
+                    stringResource(R.string.show_more)
+                }
+            )
             }
+
         }
     }
 }
