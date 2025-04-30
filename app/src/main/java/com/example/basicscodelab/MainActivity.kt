@@ -27,9 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +47,6 @@ class MainActivity : ComponentActivity() {
                 ){
                     MyApp()
                 }
-
-
             }
         }
     }
@@ -108,7 +109,12 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
     Column(modifier){
         Text(text="Hello")
-        Text(text="$name!")
+        Text(
+            text=name,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.ExtraBold
+            )
+        )
     }
 }
 
@@ -142,7 +148,12 @@ fun OnboardingPreview() {
     }
 }
 
-
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES,
+    widthDp = 320,
+    name = "GreetingPreviewDark"
+)
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
