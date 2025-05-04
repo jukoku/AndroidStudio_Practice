@@ -23,12 +23,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.bookshelf.R
 import com.example.bookshelf.model.BookCover
-import com.example.bookshelf.model.VolumeInfo
 import java.text.Normalizer
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -76,39 +76,39 @@ fun BooksGridScreen(
 }
 
 // HTML 태그 삭제
-fun removeTag(str: String?): String? {
-    var str = str
+fun removeTag(string: String?): String? {
+    var str = string
     str = Normalizer.normalize(str, Normalizer.Form.NFKC)
     var mat: Matcher
 
     // script 처리
     val script = Pattern.compile("<(no)?script[^>]*>.*?</(no)?script>", Pattern.DOTALL)
-    mat = script.matcher(str)
+    mat = script.matcher(str.toString())
     str = mat.replaceAll("")
 
     // style 처리
     val style = Pattern.compile("<style[^>]*>.*</style>", Pattern.DOTALL)
-    mat = style.matcher(str)
+    mat = style.matcher(str.toString())
     str = mat.replaceAll("")
 
     // tag 처리
     val tag = Pattern.compile("<(\"[^\"]*\"|\'[^\']*\'|[^\'\">])*>")
-    mat = tag.matcher(str)
+    mat = tag.matcher(str.toString())
     str = mat.replaceAll("")
 
-    // ntag 처리
-    val ntag = Pattern.compile("<\\w+\\s+[^<]*\\s*>")
-    mat = ntag.matcher(str)
+    // end tag 처리
+    val endTag = Pattern.compile("<\\w+\\s+[^<]*\\s*>")
+    mat = endTag.matcher(str.toString())
     str = mat.replaceAll("")
 
     // entity ref 처리
-    val Eentity = Pattern.compile("&[^;]+;")
-    mat = Eentity.matcher(str)
+    val entity = Pattern.compile("&[^;]+;")
+    mat = entity.matcher(str.toString())
     str = mat.replaceAll("")
 
-    // whitespace 처리
-    val wspace = Pattern.compile("\\s\\s+")
-    mat = wspace.matcher(str)
+    // white space 처리
+    val whiteSpace = Pattern.compile("\\s\\s+")
+    mat = whiteSpace.matcher(str.toString())
     str = mat.replaceAll("")
     return str
 }
@@ -116,6 +116,7 @@ fun removeTag(str: String?): String? {
 @Composable
 fun BookShelfCard(cover: BookCover, modifier: Modifier = Modifier){
     var authors = ""
+    var authorTag = ""
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
@@ -126,18 +127,24 @@ fun BookShelfCard(cover: BookCover, modifier: Modifier = Modifier){
                 .padding(vertical = 10.dp)
                 .fillMaxWidth()
         ){
-            cover.volumeInfo.authors.forEach { author -> authors += "$author, "  }
+            if (cover.volumeInfo.authors!!.isNotEmpty()) {
+                if (cover.volumeInfo.authors[0] != ""){
+                    cover.volumeInfo.authors.forEach { author -> authors += "$author, " }
+                    authorTag = " \n( By. $authors )"
+                }
+            }
             Text(
                 text = if (cover.volumeInfo.title != ""){
-                    cover.volumeInfo.title + " ( by" + authors + " )"
+                    cover.volumeInfo.title + authorTag
                 } else {
                     ""
                 },
                 style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp)
             )
             AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current).data(cover.volumeInfo.imageLinks.imgSrc.replace("http", "https"))
+                model = ImageRequest.Builder(context = LocalContext.current).data(cover.volumeInfo.imageLinks.imgSrc.toString().replace("http", "https"))
                     .crossfade(true).build(),
                 error = painterResource(R.drawable.ic_broken_image),
                 placeholder = painterResource(R.drawable.loading_img),

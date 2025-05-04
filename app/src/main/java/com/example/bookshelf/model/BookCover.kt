@@ -16,7 +16,7 @@ data class VolumeInfo(
     @SerialName("title")
     val title: String,
     @SerialName("authors")
-    val authors: List<String>,
+    val authors: List<String> ?= emptyList(),
     @SerialName("description")
     val description: String ?= "No description",
     @SerialName("imageLinks")
@@ -25,6 +25,12 @@ data class VolumeInfo(
 
 @Serializable
 data class ImageLinks(
+    @SerialName("small")
+    val small: String,
     @SerialName("medium")
-    val imgSrc: String
+    val medium: String ?= small,
+    @SerialName("large")
+    val large: String ?= medium,
+    @SerialName("extraLarge")
+    val imgSrc: String ?= large
 )

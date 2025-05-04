@@ -12,5 +12,5 @@ class NetworkBooksIdRepository(
     private val booksInitApiService: BooksInitApiService
 ) : BooksIdRepository{
     override suspend fun getBooksInitId(): BookInit
-    = booksInitApiService.getBooksId("jazz+history")
+    = booksInitApiService.getBooksId("jazz")
 }
