@@ -16,15 +16,12 @@
 package com.example.lunchtray
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -79,7 +76,7 @@ fun LunchTrayAppBar(
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back_button)
                     )
                 }
@@ -88,7 +85,6 @@ fun LunchTrayAppBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LunchTrayApp(
     viewModel: OrderViewModel = viewModel(),
@@ -98,9 +94,6 @@ fun LunchTrayApp(
     val currentScreen = LunchTrayScreen.valueOf(
         backStackEntry?.destination?.route ?: LunchTrayScreen.Start.name
     )
-
-    // Create ViewModel
-    val viewModel: OrderViewModel = viewModel()
 
     Scaffold(
         topBar = {
