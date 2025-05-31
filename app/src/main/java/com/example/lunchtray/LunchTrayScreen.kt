@@ -16,9 +16,13 @@
 package com.example.lunchtray
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -119,7 +123,6 @@ fun LunchTrayApp(
                     onStartOrderButtonClicked = { navController.navigate(LunchTrayScreen.Entree.name) },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(dimensionResource(R.dimen.padding_medium))
                 )
             }
             composable(route = LunchTrayScreen.Entree.name) {
@@ -128,7 +131,7 @@ fun LunchTrayApp(
                     onSelectionChanged = { viewModel.updateEntree(it) },
                     onCancelButtonClicked = { cancelOrderAndNavigateToStart(viewModel, navController) },
                     onNextButtonClicked = { navController.navigate(LunchTrayScreen.SideDish.name) },
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 )
             }
             composable(route = LunchTrayScreen.SideDish.name) {
@@ -137,7 +140,8 @@ fun LunchTrayApp(
                     onCancelButtonClicked = { cancelOrderAndNavigateToStart(viewModel, navController) },
                     onSelectionChanged = { viewModel.updateSideDish(it) },
                     onNextButtonClicked = { navController.navigate(LunchTrayScreen.Accompaniment.name) },
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+
                 )
             }
             composable(route = LunchTrayScreen.Accompaniment.name) {
@@ -146,15 +150,20 @@ fun LunchTrayApp(
                     onCancelButtonClicked = { cancelOrderAndNavigateToStart( viewModel, navController) },
                     onSelectionChanged = { viewModel.updateAccompaniment(it) },
                     onNextButtonClicked = { navController.navigate(LunchTrayScreen.Checkout.name) },
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.verticalScroll(rememberScrollState())
                 )
             }
             composable(route = LunchTrayScreen.Checkout.name) {
                 CheckoutScreen(
                     orderUiState = uiState,
                     onCancelButtonClicked = { cancelOrderAndNavigateToStart( viewModel, navController) },
-                    onNextButtonClicked = { navController.navigate(LunchTrayScreen.Start.name) },
-                    modifier = Modifier.fillMaxHeight()
+                    onNextButtonClicked = { cancelOrderAndNavigateToStart( viewModel, navController) },
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = dimensionResource(R.dimen.padding_medium),
+                            end = dimensionResource(R.dimen.padding_medium)
+                        )
                 )
             }
 
